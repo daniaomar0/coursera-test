@@ -1,0 +1,118 @@
+{% extends 'instructor/base.html' %}
+
+{% block title %}Course Creation{% endblock %}
+
+{% block content %}
+<form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div id="sections-container">
+ 
+        <h3>Add Section Title</h3>
+        {{ section_formset.management_form }}
+
+        {% for section_form in section_formset %}
+            <div class="section" id="section-{{ section_form.prefix }}">
+                <label for="{{ section_form.prefix }}-title">Section Title</label>
+                <input type="text" id="{{ section_form.prefix }}-title" name="{{ section_form.prefix }}-title" value="{{ section_form.title.value }}" placeholder="Enter Section Title" required>
+
+
+                <div class='lecture' id="lectures-container-{{ section_form.prefix }}">
+                    {{ lecture_formsets.forloop.counter.management_form }}
+                    <!-- Lectures will be added here dynamically -->
+                </div>
+
+                <button type="button" 
+                        hx-get="{% url 'add_lecture' section_form.prefix %}" 
+                        hx-target="#lectures-container-{{ section_form.prefix }}" 
+                        hx-swap="beforeend">Add Lecture</button>
+
+                <button type="button" class="remove-section" 
+                        hx-on="click: this.closest('.section').remove(); 
+                        decrementTotalForms('section')">Remove Section</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="button" class="add-section" 
+            hx-get="{% url 'add_section' course.id %}" 
+            hx-target="#sections-container" 
+            hx-swap="afterend" 
+            hx-on="afterSwap: incrementTotalForms('section')">Add Section</button>
+
+    <button type="submit">Save Course</button>
+</form>
+
+<script>
+    function setupContentTypeFields() {
+        document.querySelectorAll('.content-type-select').forEach(select => {
+            select.addEventListener('change', function() {
+                const contentField = this.closest('.lecture-form').querySelector('.content-field');
+                const videoField = this.closest('.lecture-form').querySelector('.video-field');
+                if (this.value === 'article') {
+                    contentField.style.display = 'block';
+                    videoField.style.display = 'none';
+                } else if (this.value === 'video') {
+                    contentField.style.display = 'none';
+                    videoField.style.display = 'block';
+                } else {
+                    contentField.style.display = 'none';
+                    videoField.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    
+  
+    
+    function setupRemoveLectureButtons() {
+        document.querySelectorAll('.remove-lecture').forEach(button => {
+            button.addEventListener('click', function() {
+                const lectureForm = this.closest('.lecture-form');
+                if (lectureForm) {
+                    lectureForm.remove();
+                    
+                }
+            });
+        });
+    }
+    
+    function setupRemoveSectionButtons() {
+        document.querySelectorAll('.remove-section').forEach(button => {
+            button.addEventListener('click', function() {
+                const sectionDiv = this.closest('.section');
+                if (sectionDiv) {
+                    sectionDiv.remove();
+                    
+                }
+            });
+        });
+    }
+    const totalNewForms=document.getElementById('section-section_0')
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        setupContentTypeFields();
+        setupRemoveLectureButtons();
+        setupRemoveSectionButtons();
+        
+    });
+    
+
+    
+    document.body.addEventListener('htmx:afterSwap', function() {
+        setupContentTypeFields();
+        setupRemoveLectureButtons();
+        setupRemoveSectionButtons();
+    
+        const currentSectionForms = document.getElementsByClassName('section');
+        const currentFormCount = currentSectionForms.length;
+    
+        console.log(currentFormCount);
+    
+        // Regex to replace placeholder prefix with the current form count
+        const regex = new RegExp('__prefix__', 'g');
+    
+    });
+    
+</script>
+{% endblock %}

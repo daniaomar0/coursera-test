@@ -1,0 +1,19 @@
+<div class="lecture-form">
+    <input type="text" name="lecture-title-{{ section_form.prefix }}" placeholder="Enter Lecture Title" class="lecture-title-input" required>
+    
+    <select name="content_type-{{ section_form.prefix }}" class="content-type-select">
+        <option value="">Select Content Type</option>
+        <option value="article">Article</option>
+        <option value="video">Video</option>
+    </select>
+    
+    <div class="content-field" style="display:none;">
+        <textarea name="article_content-{{ section_form.prefix }}" placeholder="Enter Article Content"></textarea>
+    </div>
+    
+    <div class="video-field" style="display:none;">
+        <input type="file" name="video_upload-{{ section_form.prefix }}">
+    </div>
+    
+    <button type="button" class="remove-lecture" hx-on="click: this.closest('.lecture-form').remove()">Remove Lecture</button>
+</div>

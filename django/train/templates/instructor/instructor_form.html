@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor form</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+       
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="{% url 'instructor_home' %}" class="button top-left">Skip</a>
+    <div class="container-ins">
+        <div class="image-container-ins">
+            <img src="{% static 'img/illustration.png' %}">
+        </div>
+        <div class="form-content-ins">
+            <h1>Share your knowledge</h1>
+            <p>
+                trAIn courses are AI-based experiences that give students the chance for customized learning based on their knowledge and level.
+                share what is your education level with us.
+            </p>
+            <!-- Step 1 Form -->
+            <form id="form" action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="buttons-ins">
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </div>
+            </form>
+
+</body>
+

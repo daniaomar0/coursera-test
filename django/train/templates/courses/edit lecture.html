@@ -1,0 +1,53 @@
+{% extends 'instructor/base.html' %}
+{% load static %}
+{% block content %}
+<div class="lecture-edit">
+    <!-- Sidebar navigation -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="#">Basic Info</a></li>
+            <li><a href="#">Instructions</a></li>
+            <li><a href="#">Questions</a></li>
+            <li><a href="#">Solutions</a></li>
+        </ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <h3>Edit Lecture</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="lecture-title">Lecture Title</label>
+                <input type="text" id="lecture-title" name="title" value="{{ lecture.title }}">
+            </div>
+
+            <div class="form-group">
+                <label for="lecture-type">Lecture Type</label>
+                <select id="lecture-type" name="type">
+                    <option value="video" {% if lecture.type == 'video' %}selected{% endif %}>Video</option>
+                    <option value="text" {% if lecture.type == 'text' %}selected{% endif %}>Text</option>
+                    <option value="quiz" {% if lecture.type == 'quiz' %}selected{% endif %}>Quiz</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="content-field">
+                {% if lecture.type == 'video' %}
+                    <label for="lecture-video">Upload Video</label>
+                    <input type="file" id="lecture-video" name="video">
+                {% elif lecture.type == 'text' %}
+                    <label for="lecture-text">Lecture Text</label>
+                    <textarea id="lecture-text" name="text">{{ lecture.text }}</textarea>
+                {% elif lecture.type == 'quiz' %}
+                    <label for="lecture-quiz">Quiz Questions</label>
+                    <!-- Add quiz form -->
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn-save">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

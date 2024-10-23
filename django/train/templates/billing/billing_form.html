@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container-reco">
+    <h4>Subscription</h4>
+    <h3>US$20.00 per month</h3>
+        
+        <hr>
+        <div>
+            <span>Subtotal</span><span>US$20.00</span>
+        </div>
+    <div id="form-container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

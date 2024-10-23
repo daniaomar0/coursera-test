@@ -1,0 +1,25 @@
+{% extends 'instructor/base.html' %}
+{% load static %}
+{% block content %}
+<h1>Upload Content for Course: {{ course.title }}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for topic in topics %}
+        <div>
+            <h3>{{ topic.section.title }} - {{ topic.title }} ({{ topic.get_content_type_display }})</h3>
+            {% if topic.content_type == 'video' %}
+                <label>Upload Video:</label>
+                <input type="file" name="video_{{ topic.id }}" accept="video/*">
+            {% elif topic.content_type == 'article' %}
+                <label>Article Content:</label>
+                <textarea name="article_{{ topic.id }}">{{ topic.article_content }}</textarea>
+            {% elif topic.content_type == 'quiz' %}
+                <label>Quiz Questions (JSON):</label>
+                <textarea name="quiz_{{ topic.id }}">{{ topic.quiz_questions }}</textarea>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit">Save Content</button>
+</form>
+{% endblock %}
+

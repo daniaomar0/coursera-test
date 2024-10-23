@@ -1,0 +1,69 @@
+<!-- In your template file -->
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- Check for status in the query parameters -->
+{% if request.GET.status == 'enrolled' %}
+    <p class="status-message">You have successfully enrolled in the course!</p>
+{% elif request.GET.status == 'already_enrolled' %}
+    <p class="status-message">You are already enrolled in this course.</p>
+{% endif %}
+
+<!--Begin col-->
+<div class="column">
+    {% for course in courses %}
+    <div class="course-item">
+        <a href="{% url 'course' course.id%}">
+            <img src="{{ course.image.url }}" alt="{{ course.title }}" class="course-image" height="400" width="500">
+        </a>
+        
+        <p>
+            <span class="menu-name">{{ course.title }}</span>
+        </p>
+        <p>{{ course.instructor }}
+           
+        </p>
+        
+        <!-- Enroll Button -->
+        <a href="{% url 'enroll' course.id %}" class="enroll-now">Enroll now</a>
+    </div>
+    {% endfor %}
+</div>
+<!--End col-->
+{% endblock %}
+
+<style>
+.status-message {
+    color: #64cc61;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.enroll-now').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+                const url = this.href;
+    
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(response => response.json()).then(data => {
+                    if (data.status === 'enrolled') {
+                        this.textContent = 'Enrolled!';
+                        
+                    } else if (data.status === 'already_enrolled') {
+                        this.textContent = 'Already Enrolled';
+                    }
+                }).catch(error => console.error('Error:', error));
+            });
+        });
+    });
+    </script>

@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <aside class="sidebar">
+        <h2>My account</h2>
+        <div class="sidebar-links">
+            <a href="#">Tracking</a>
+            <a href="{% url 'billing' %}">Billing</a>
+            <a href="#">Information</a>
+            <a href="#">Notifications</a>
+        </div>
+    </aside>
+    <main class='content'>
+          
+    </main>
+{% endblock %}

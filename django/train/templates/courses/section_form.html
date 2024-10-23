@@ -1,0 +1,16 @@
+<div class="section" id="section-{{ section_form.prefix }}">
+    <label for="{{ section_form.prefix }}-title">Section Title</label>
+    <input type="text" name="{{ section_form.prefix }}-title" placeholder="Enter Section Title" class="section-title-input" required>
+
+    <div id="lectures-container-{{ section_form.prefix }}">
+        {{ lecture_formset.management_form }}
+        <!-- Lectures will be added here dynamically -->
+    </div>
+        
+    <button type="button" class="add-lecture" 
+            hx-get="{% url 'add_lecture' section_form.prefix %}" 
+            hx-target="#lectures-container-{{ section_form.prefix }}" 
+            hx-swap="beforeend">Add Lecture</button>
+
+    <button type="button" class="remove-section">Remove Section</button>
+</div>

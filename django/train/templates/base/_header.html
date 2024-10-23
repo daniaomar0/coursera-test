@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Navigation Bar</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'img/train_logo.png' %}" alt="trAIn Logo" style="height: 50px;">
+                </a>
+            </div>
+            <div class="search-bar">
+                <form method="get" action="{% url 'search' %}">
+                    <input type="text" name="q" placeholder="Search for anything" value="{{ request.GET.q }}" class="search-input">
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'courses' %}">Courses</a></li>
+                <li><a href="{% url 'community' %}">Community</a></li>
+                <li><a href="{% url 'teach_button' %}">Teach on trAIn</a></li>
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="{% url 'settings' %}" class="dropbtn" style="color: white; font-size:14px; ">{{initials}}</a>
+                    <div class="dropdown-content">
+                        <div class="profile-info">
+                            
+                            <div class="user-details">
+                                <p>{{ user.first_name }} {{ user.last_name }}</p>
+                                <p>{{ email }}</p>
+                            </div>
+                        </div>
+                        <ul>
+                            <li><a href="{% url 'instructor_home' %}">My learning</a></li>
+                            <li><a href="{% url 'instructor_home' %}">My cart</a></li>
+                            <li><a href="{% url 'instructor_home' %}">Wishlist</a></li>
+                            <li><a href="{% url 'instructor_home' %}">Learner dashboard</a></li>
+                            <li><a href="{% url 'instructor_home' %}">Notifications</a></li>
+                            <li><a href="{% url 'instructor_home' %}">Messages</a></li>
+                            <li><a href="{% url 'settings' %}">Account settings</a></li>
+                            <li><a href="{% url 'instructor_home' %}">Payment methods</a></li>
+                            <li><a href="{% url 'instructor_home' %}">Subscriptions</a></li>
+                            <li><a href="{% url 'instructor_home' %}">Purchase history</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+                
+            </ul>  
+        </nav>
+    
+        <!-- FontAwesome for icons -->
+
+    </body>
+    </html>
+
+
+
+

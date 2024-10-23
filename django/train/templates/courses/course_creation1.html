@@ -1,0 +1,47 @@
+{% extends "instructor/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-cc">
+  <h2>Create Course - Step 1: Course Details</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ course_form|crispy }}
+
+    <h3>Associates' Emails</h3>
+    <div id="associates-formset">
+      {{ associate_formset.management_form }}
+      {% for form in associate_formset %}
+        <div class="associate-form">
+          {{ form|crispy }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div id="associate-template" class="associate-form" style="display: none;">
+      {{ associate_formset.empty_form|crispy }}
+    </div>
+
+    <button type="button" onclick="addAssociateForm()">Add Another Associate</button>
+    <button type="submit" class="btn btn-primary">Next</button>
+  </form>
+</div>
+
+<script>
+  function addAssociateForm() {
+    const formset = document.getElementById('associates-formset');
+    const totalForms = document.querySelector('#id_associates-TOTAL_FORMS');
+    const formCount = parseInt(totalForms.value);
+
+    const template = document.getElementById('associate-template');
+    const newForm = template.cloneNode(true);
+    newForm.style.display = 'block';
+
+    const regex = new RegExp('__prefix__', 'g');
+    newForm.innerHTML = newForm.innerHTML.replace(regex, formCount);
+    formset.appendChild(newForm);
+
+    totalForms.value = formCount + 1;
+  }
+</script>
+{% endblock %}

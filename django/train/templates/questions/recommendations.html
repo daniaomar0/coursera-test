@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor form</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <a href="{% url 'home' %}" class="button top-left">Skip</a>
+    <div class="container-ins">
+        <div class="image-container-ins">
+            <img src="{% static 'img/illustration.png' %}">
+        </div>
+        <div class="form-content-ins">
+        <h1>Help us know you better, {{username|title}}</h1>
+        <p>
+            trAIn courses are AI-based experiences that give students the chance for customized learning based on their knowledge and level.
+            so to help us deliver the best content for you, please take some moments to answer these questions.
+        </p>
+        <div id="form-container">
+            <!-- Step 1 Form -->
+            <form id="step1-form" action="" method="post">
+                {% csrf_token %}
+                {{ step1_form.as_p }}
+                <div class="buttons-ins">
+                    <input type="button" id="next-button" value="Next",>
+                </div>
+            </form>
+            <!-- Step 2 Form (Hidden initially) -->
+            <form id="step2-form" action="" method="post" style="display: none;">
+                {% csrf_token %}
+                {{ step2_form.as_p }}
+                <div class="buttons-ins">
+                    <input type="button" id="prev-button" value="Previous">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const step1Form = document.getElementById('step1-form');
+            const step2Form = document.getElementById('step2-form');
+            const nextButton = document.getElementById('next-button');
+            const prevButton = document.getElementById('prev-button');
+
+            nextButton.addEventListener('click', function() {
+                step1Form.style.display = 'none';
+                step2Form.style.display = 'block';
+            });
+
+            prevButton.addEventListener('click', function() {
+                step2Form.style.display = 'none';
+                step1Form.style.display = 'block';
+            });
+        });
+    </script>
+</body>
